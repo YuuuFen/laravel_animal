@@ -2,6 +2,10 @@
 
 namespace App\Exceptions;
 
+use Throwable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
+
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -33,5 +37,25 @@ class Handler extends ExceptionHandler
     public function register()
     {
         //
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        //如果使用者請求伺服器回傳 JSON 格式
+        if ($request->expectsJson()) {
+            //檢查 $exception 這個被攔截的例外是不是 ModelNotFoundException 類別
+            //instanceof: 型態運算子
+            if ($exception instanceof ModelNotFoundException) {
+                //攔截到例外，回傳狀態碼並附上錯誤資訊
+                return response()->json(
+                    [
+                        'error' => '找不到資源'
+                    ],
+                    Response::HTTP_NOT_FOUND
+                );
+            }
+        }
+        //執行父類別 render 的程式
+        return parent::render($request, $exception);
     }
 }
