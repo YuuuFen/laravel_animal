@@ -91,6 +91,11 @@ class AnimalController extends Controller
      */
     public function destroy(Animal $animal)
     {
-        //
+        $animal->delete();
+        //將查詢到的 Animal Model 實體物件，使用 Model 的 delete() 方法刪除資料，
+        //將資料庫中的 animals 資料表 ID 為 1 的資料刪除
+        return response(null, Response::HTTP_NO_CONTENT);
+        //回傳內容為 null 並且給予 204 HTTP 狀態碼
+        //這邊一樣使用 Symfony 套件定義好的常數
     }
 }
