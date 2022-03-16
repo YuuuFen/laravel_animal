@@ -46,7 +46,7 @@ class Handler extends ExceptionHandler
             //檢查 $exception 這個被攔截的例外是不是 ModelNotFoundException 類別
             //instanceof: 型態運算子
             if ($exception instanceof ModelNotFoundException) {
-                //攔截到例外，回傳狀態碼並附上錯誤資訊
+                //攔截到例外，回傳狀態碼並附上錯誤資訊為 json 格式
                 return response()->json(
                     [
                         'error' => '找不到資源'
